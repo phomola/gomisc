@@ -1,8 +1,11 @@
 module github.com/phomola/gomisc
 
-go 1.22
+go 1.23.0
 
-require github.com/stretchr/testify v1.10.0
+require (
+	github.com/fealsamh/go-utils v0.1.46
+	github.com/stretchr/testify v1.10.0
+)
 
 require (
 	github.com/davecgh/go-spew v1.1.1 // indirect
