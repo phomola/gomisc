@@ -11,10 +11,12 @@ import (
 	"reflect"
 	"slices"
 	"unsafe"
+
+	"github.com/fealsamh/go-utils/nocopy"
 )
 
 var (
-	null = []byte("null")
+	null = nocopy.Bytes("null")
 )
 
 // Identity is the identity function.
