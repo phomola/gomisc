@@ -1,9 +1,9 @@
 module github.com/phomola/gomisc
 
-go 1.23.0
+go 1.24.0
 
 require (
-	github.com/fealsamh/go-utils v0.1.51
+	github.com/fealsamh/go-utils v0.1.52
 	github.com/stretchr/testify v1.11.0
 )
 
