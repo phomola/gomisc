@@ -14,8 +14,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/fealsamh/go-utils/nocopy"
 	"github.com/google/uuid"
-	"github.com/mailstepcz/go-utils/nocopy"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
