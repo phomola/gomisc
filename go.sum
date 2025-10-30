@@ -2,6 +2,8 @@ github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/fealsamh/go-utils v0.1.56 h1:wDM/+q1F5RgwDjv8BGlWXQZIek9OmUFCwb+LYLB+paA=
 github.com/fealsamh/go-utils v0.1.56/go.mod h1:SmLBFs6xDR/7JCDncdUTrrd1svC1BYfldgu5MajPLiI=
+github.com/fealsamh/go-utils v0.1.57 h1:lIoQK4x7wcuafw1r4awEBaGryc+QCBeQK06bzzQhM7w=
+github.com/fealsamh/go-utils v0.1.57/go.mod h1:Ryz5Ef3MpcwZfpcTsi3woyWMk3BiEkEK1rJLRxVazh4=
 github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
 github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
@@ -22,6 +24,8 @@ golang.org/x/text v0.27.0 h1:4fGWRpyh641NLlecmyl4LOe6yDdfaYNrGb2zdfo4JV4=
 golang.org/x/text v0.27.0/go.mod h1:1D28KMCvyooCX9hBiosv5Tz/+YLxj0j7XhWjpSUF7CU=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20251014184007-4626949a642f h1:1FTH6cpXFsENbPR5Bu8NQddPSaUUE6NA2XdZdDSAJK4=
 google.golang.org/genproto/googleapis/rpc v0.0.0-20251014184007-4626949a642f/go.mod h1:7i2o+ce6H/6BluujYR+kqX3GKH+dChPTQU19wjRPiGk=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20251029180050-ab9386a59fda h1:i/Q+bfisr7gq6feoJnS/DlpdwEL4ihp41fvRiM3Ork0=
+google.golang.org/genproto/googleapis/rpc v0.0.0-20251029180050-ab9386a59fda/go.mod h1:7i2o+ce6H/6BluujYR+kqX3GKH+dChPTQU19wjRPiGk=
 google.golang.org/grpc v1.76.0 h1:UnVkv1+uMLYXoIz6o7chp59WfQUYA2ex/BXQ9rHZu7A=
 google.golang.org/grpc v1.76.0/go.mod h1:Ju12QI8M6iQJtbcsV+awF5a4hfJMLi4X0JLo94ULZ6c=
 google.golang.org/protobuf v1.36.10 h1:AYd7cD/uASjIL6Q9LiTjz8JLcrh/88q5UObnmY3aOOE=
