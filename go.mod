@@ -3,7 +3,7 @@ module github.com/phomola/gomisc
 go 1.24.0
 
 require (
-	github.com/fealsamh/go-utils v0.1.57
+	github.com/fealsamh/go-utils v0.1.58
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.11.1
 	google.golang.org/grpc v1.76.0
