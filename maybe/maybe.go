@@ -26,9 +26,9 @@ func Identity[T any](x T) T {
 
 // Iface is a non-generic interface for [Maybe].
 type Iface interface {
-	Set(interface{})
+	Set(any)
 	SetPtr(unsafe.Pointer)
-	Get() (interface{}, bool)
+	Get() (any, bool)
 	GetPtr() unsafe.Pointer
 	SetValid()
 	MaybeType() reflect.Type
@@ -87,7 +87,7 @@ func (m Maybe[T]) GetOrZero() T {
 }
 
 // Get gets the underlying value if valid.
-func (m *Maybe[T]) Get() (interface{}, bool) {
+func (m *Maybe[T]) Get() (any, bool) {
 	if m.Valid {
 		return m.Val, true
 	}
@@ -108,7 +108,7 @@ func (m *Maybe[T]) GetPtr() unsafe.Pointer {
 }
 
 // Set sets the underlying value.
-func (m *Maybe[T]) Set(x interface{}) {
+func (m *Maybe[T]) Set(x any) {
 	m.Val = x.(T)
 	m.Valid = true
 }
@@ -201,7 +201,7 @@ func (m Maybe[T]) Value() (driver.Value, error) {
 		return nil, nil
 	}
 
-	iface := interface{}(m.Val)
+	iface := any(m.Val)
 
 	switch v := iface.(type) {
 	case driver.Valuer:
