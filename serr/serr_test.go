@@ -113,13 +113,13 @@ func TestLogString(t *testing.T) {
 }`)
 }
 
-var gr interface{}
+var gr any
 
 func BenchmarkAttrSlice(b *testing.B) {
 	a, bb, c := "abcd", 1234, 12.34
-	var lr interface{}
+	var lr any
 	for i := 0; i < b.N; i++ {
-		sl := []interface{}{a, bb, c}
+		sl := []any{a, bb, c}
 		lr = sl
 	}
 	gr = lr
@@ -127,9 +127,9 @@ func BenchmarkAttrSlice(b *testing.B) {
 
 func BenchmarkAttrSliceFunc(b *testing.B) {
 	a, bb, c := "abcd", 1234, 12.34
-	var lr interface{}
+	var lr any
 	for i := 0; i < b.N; i++ {
-		f := func() []interface{} { return []interface{}{a, bb, c} }
+		f := func() []any { return []any{a, bb, c} }
 		lr = f
 	}
 	gr = lr
