@@ -45,11 +45,11 @@ func TestEnum(t *testing.T) {
 	req.Equal([]int{1, 2, 3, 4, 5}, s)
 }
 
-var gr interface{}
+var gr any
 
 func BenchmarkNativeEnum(b *testing.B) {
 	s := []int{1, 2, 3, 4, 5}
-	var lr interface{}
+	var lr any
 	for i := 0; i < b.N; i++ {
 		r := make([]int, 0, 5)
 		for _, x := range s {
@@ -62,7 +62,7 @@ func BenchmarkNativeEnum(b *testing.B) {
 
 func BenchmarkListEnum(b *testing.B) {
 	l := FromSlice([]int{1, 2, 3, 4, 5})
-	var lr interface{}
+	var lr any
 	for i := 0; i < b.N; i++ {
 		r := make([]int, 0, 5)
 		for x := range l.Enum() {

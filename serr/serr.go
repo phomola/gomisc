@@ -125,7 +125,7 @@ type Attributed interface {
 // Attr is a named attribute associated with an error.
 type Attr struct {
 	key   string
-	value interface{}
+	value any
 }
 
 // Attributes returns the attribute as a slice in order to conform to [Attributed].
@@ -149,7 +149,7 @@ func Time(key string, value time.Time) Attr { return Attr{key: key, value: value
 func Error(key string, value error) Attr { return Attr{key: key, value: value} }
 
 // Any is an untyped attribute.
-func Any(key string, value interface{}) Attr { return Attr{key: key, value: value} }
+func Any(key string, value any) Attr { return Attr{key: key, value: value} }
 
 // New returns a new structured error.
 func New(msg string, attrs ...Attributed) error {
@@ -203,8 +203,8 @@ func Log(ctx context.Context, logger *slog.Logger, level slog.Level, err error) 
 	}
 }
 
-func attrsToSlog(errAttrs []Attributed) []interface{} {
-	attrs := make([]interface{}, 0, len(errAttrs))
+func attrsToSlog(errAttrs []Attributed) []any {
+	attrs := make([]any, 0, len(errAttrs))
 	for _, attr := range errAttrs {
 		for _, attr := range attr.Attributes() {
 			switch val := attr.value.(type) {
@@ -230,7 +230,7 @@ func attrsToSlog(errAttrs []Attributed) []interface{} {
 	return attrs
 }
 
-func logString(val interface{}) (string, bool) {
+func logString(val any) (string, bool) {
 	switch val := val.(type) {
 	case string:
 		return val, true
