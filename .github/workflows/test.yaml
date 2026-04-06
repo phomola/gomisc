@@ -23,6 +23,7 @@ jobs:
       - name: Vet & test
         run: |
           # Vet & test
+          export GOEXPERIMENT=jsonv2
           go vet -v ./...
           go test -v ./...
           go install golang.org/x/lint/golint@latest
