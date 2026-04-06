@@ -6,7 +6,8 @@ package serr
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"log/slog"
@@ -250,10 +251,11 @@ func logString(val any) (string, bool) {
 		return logval.LogString(), true
 	}
 
-	b, err := json.MarshalIndent(val, "", " ")
+	b, err := json.Marshal(val)
 	if err != nil {
 		return "", false
 	}
+	(*jsontext.Value)(&b).Indent()
 	return nocopy.String(b), true
 }
 
@@ -286,7 +288,7 @@ func ToGRPC(err error) error {
 		return status.Error(codes.InvalidArgument, msg)
 	}
 
-	var jsonErr *json.SyntaxError
+	var jsonErr *json.SemanticError
 	if errors.As(err, &jsonErr) {
 		return status.Error(codes.InvalidArgument, msg)
 	}
