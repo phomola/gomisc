@@ -1,9 +1,9 @@
 module github.com/phomola/gomisc
 
-go 1.26.0
+go 1.26.4
 
 require (
-	github.com/fealsamh/go-utils v0.1.71
+	github.com/fealsamh/go-utils v0.1.72-0.20260609194303-0e4342dac5da
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.11.1
 	google.golang.org/grpc v1.81.1
