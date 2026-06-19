@@ -286,8 +286,7 @@ func ToGRPC(err error) error {
 		return status.Error(codes.InvalidArgument, msg)
 	}
 
-	var jsonErr *json.SyntaxError
-	if errors.As(err, &jsonErr) {
+	if _, ok := errors.AsType[*json.SyntaxError](err); ok {
 		return status.Error(codes.InvalidArgument, msg)
 	}
 
