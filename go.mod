@@ -6,7 +6,7 @@ require (
 	github.com/fealsamh/go-utils v0.1.72
 	github.com/google/uuid v1.6.0
 	github.com/stretchr/testify v1.11.1
-	google.golang.org/grpc v1.81.1
+	google.golang.org/grpc v1.82.0
 )
 
 require (
