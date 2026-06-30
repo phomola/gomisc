@@ -109,7 +109,7 @@ func TestLogString(t *testing.T) {
 	logstr, ok = logString(obj2)
 	req.True(ok)
 	req.Equal(logstr, `{
- "Data": "OBJ2"
+	"Data": "OBJ2"
 }`)
 }
 
