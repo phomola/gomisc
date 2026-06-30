@@ -288,8 +288,7 @@ func ToGRPC(err error) error {
 		return status.Error(codes.InvalidArgument, msg)
 	}
 
-	var jsonErr *json.SemanticError
-	if errors.As(err, &jsonErr) {
+	if _, ok := errors.AsType[*json.SemanticError](err); ok {
 		return status.Error(codes.InvalidArgument, msg)
 	}
 
