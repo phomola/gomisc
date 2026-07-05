@@ -21,6 +21,10 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+const (
+	invalidUUIDErrMessage = "invalid uuid"
+)
+
 type serror struct {
 	msg   string
 	attrs []Attributed
@@ -281,11 +285,11 @@ func ToGRPC(err error) error {
 	case errors.Is(err, sql.ErrNoRows):
 		return status.Error(codes.NotFound, msg)
 
-	// case uuid.IsInvalidLengthError(err):
-	// 	return status.Error(codes.InvalidArgument, msg)
-
-	case msg == "invalid UUID format":
+	case err.Error() == invalidUUIDErrMessage:
 		return status.Error(codes.InvalidArgument, msg)
+
+		// case msg == "invalid UUID format":
+		// 	return status.Error(codes.InvalidArgument, msg)
 	}
 
 	if _, ok := errors.AsType[*json.SemanticError](err); ok {
