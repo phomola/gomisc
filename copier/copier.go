@@ -103,3 +103,12 @@ func Copy[D, S any](dst *D, src *S) error {
 	}
 	return f(unsafe.Pointer(dst), unsafe.Pointer(src))
 }
+
+// Copied ...
+func Copied[D, S any](src *S) (*D, error) {
+	var dst D
+	if err := Copy(&dst, src); err != nil {
+		return nil, err
+	}
+	return &dst, nil
+}
