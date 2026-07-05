@@ -21,16 +21,15 @@ type typePair struct {
 }
 
 func getCopier(dst, src reflect.Type) (func(unsafe.Pointer, unsafe.Pointer) error, error) {
-	if dst.Kind() != reflect.Struct || src.Kind() != reflect.Struct {
-		return nil, ErrInvalidType
-	}
 	pair := typePair{dst, src}
 	if f, ok := copiers.Load(pair); ok {
 		return f.(func(unsafe.Pointer, unsafe.Pointer) error), nil
 	}
+	if dst.Kind() != reflect.Struct || src.Kind() != reflect.Struct {
+		return nil, ErrInvalidType
+	}
 	fieldCopiers := make([]func(unsafe.Pointer, unsafe.Pointer) error, 0, src.NumField())
-	for i := 0; i < src.NumField(); i++ {
-		fs := src.Field(i)
+	for fs := range src.Fields() {
 		fd, ok := dst.FieldByName(fs.Name)
 		if !ok {
 			return nil, ErrFieldMissing
