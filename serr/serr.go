@@ -14,9 +14,9 @@ import (
 	"strconv"
 	"strings"
 	"time"
+	"uuid"
 
 	"github.com/fealsamh/go-utils/nocopy"
-	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
@@ -281,8 +281,8 @@ func ToGRPC(err error) error {
 	case errors.Is(err, sql.ErrNoRows):
 		return status.Error(codes.NotFound, msg)
 
-	case uuid.IsInvalidLengthError(err):
-		return status.Error(codes.InvalidArgument, msg)
+	// case uuid.IsInvalidLengthError(err):
+	// 	return status.Error(codes.InvalidArgument, msg)
 
 	case msg == "invalid UUID format":
 		return status.Error(codes.InvalidArgument, msg)
