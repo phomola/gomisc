@@ -78,6 +78,7 @@ func getCopier(dst, src reflect.Type) (func(unsafe.Pointer, unsafe.Pointer) erro
 				if err != nil {
 					return nil, err
 				}
+				dt := fd.Type.Elem()
 				fieldCopiers = append(fieldCopiers, func(dst, src unsafe.Pointer) error {
 					dst = unsafe.Add(dst, do)
 					src = unsafe.Add(src, so)
@@ -85,7 +86,7 @@ func getCopier(dst, src reflect.Type) (func(unsafe.Pointer, unsafe.Pointer) erro
 					if s == nil {
 						*(*unsafe.Pointer)(dst) = nil
 					} else {
-						d := reflect.New(fd.Type.Elem()).UnsafePointer()
+						d := reflect.New(dt).UnsafePointer()
 						if err := c(d, s); err != nil {
 							return err
 						}
