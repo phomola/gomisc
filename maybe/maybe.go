@@ -12,17 +12,13 @@ import (
 	"slices"
 	"unsafe"
 
+	"github.com/fealsamh/go-utils/function"
 	"github.com/fealsamh/go-utils/nocopy"
 )
 
 var (
 	null = nocopy.Bytes("null")
 )
-
-// Identity is the identity function.
-func Identity[T any](x T) T {
-	return x
-}
 
 // Iface is a non-generic interface for [Maybe].
 type Iface interface {
@@ -168,7 +164,7 @@ func Bind[T, U any](f func(T) Maybe[U], x Maybe[T]) Maybe[U] {
 
 // Join is the monadic join operation.
 func Join[T any](x Maybe[Maybe[T]]) Maybe[T] {
-	return Bind(Identity[Maybe[T]], x)
+	return Bind(function.Identity, x)
 }
 
 func (m Maybe[T]) MarshalJSON() ([]byte, error) {
