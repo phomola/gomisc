@@ -62,13 +62,38 @@ func getCopier(dst, src reflect.Type) (func(unsafe.Pointer, unsafe.Pointer) erro
 				*(*string)(dst) = *(*string)(src)
 				return nil
 			})
-		case fs.Type.Kind() == reflect.Pointer && fd.Type.Kind() == reflect.Pointer && fs.Type.Elem() == fd.Type.Elem():
-			fieldCopiers = append(fieldCopiers, func(dst, src unsafe.Pointer) error {
-				dst = unsafe.Add(dst, do)
-				src = unsafe.Add(src, so)
-				*(*unsafe.Pointer)(dst) = *(*unsafe.Pointer)(src)
-				return nil
-			})
+		case fs.Type.Kind() == reflect.Pointer && fd.Type.Kind() == reflect.Pointer:
+			if fs.Type.Elem() == fd.Type.Elem() {
+				fieldCopiers = append(fieldCopiers, func(dst, src unsafe.Pointer) error {
+					dst = unsafe.Add(dst, do)
+					src = unsafe.Add(src, so)
+					*(*unsafe.Pointer)(dst) = *(*unsafe.Pointer)(src)
+					return nil
+				})
+			} else {
+				if fs.Type.Elem().Kind() != reflect.Struct || fd.Type.Elem().Kind() != reflect.Struct {
+					return nil, ErrInvalidType
+				}
+				c, err := getCopier(fd.Type.Elem(), fs.Type.Elem())
+				if err != nil {
+					return nil, err
+				}
+				fieldCopiers = append(fieldCopiers, func(dst, src unsafe.Pointer) error {
+					dst = unsafe.Add(dst, do)
+					src = unsafe.Add(src, so)
+					s := *(*unsafe.Pointer)(src)
+					if s == nil {
+						*(*unsafe.Pointer)(dst) = nil
+					} else {
+						d := reflect.New(fd.Type.Elem()).UnsafePointer()
+						if err := c(d, s); err != nil {
+							return err
+						}
+						*(*unsafe.Pointer)(dst) = d
+					}
+					return nil
+				})
+			}
 		case fs.Type.Kind() == reflect.Struct && fd.Type.Kind() == reflect.Struct:
 			c, err := getCopier(fd.Type, fs.Type)
 			if err != nil {
