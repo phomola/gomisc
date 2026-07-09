@@ -58,6 +58,21 @@ func TestFmap(t *testing.T) {
 	req.Equal([]string{"1", "2", "3"}, l2.Slice())
 }
 
+func TestConcat(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]int{1, 2, 3})
+	l2 := FromSlice([]int{4, 5, 6})
+	req.Equal([]int{1, 2, 3, 4, 5, 6}, l.Concat(l2).Slice())
+}
+
+func TestBind(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]int{1, 5, 10})
+	req.Equal([]int{1, 2, 5, 6, 10, 11}, l.Bind(func(x int) List[int] { return FromSlice([]int{x, x + 1}) }).Slice())
+}
+
 var gr any
 
 func BenchmarkNativeEnum(b *testing.B) {

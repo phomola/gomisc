@@ -95,3 +95,32 @@ func (l List[T]) Fmap[U comparable](f func(T) U) List[U] {
 		return Cons(f(l.Head()), l.Tail().Fmap(f))
 	}
 }
+
+// Concat ...
+func (l List[T]) Concat(l2 List[T]) List[T] {
+	switch {
+	case l.IsEmpty():
+		return l2
+	case l.IsSingleton():
+		return Cons(l.Head(), l2)
+	default:
+		return Cons(l.Head(), l.Tail().Concat(l2))
+	}
+}
+
+// Join ...
+func Join[T comparable](l List[List[T]]) List[T] {
+	switch {
+	case l.IsEmpty():
+		return List[T]{}
+	case l.IsSingleton():
+		return l.Head()
+	default:
+		return l.Head().Concat(Join(l.Tail()))
+	}
+}
+
+// Bind ...
+func (l List[T]) Bind[U comparable](f func(T) List[U]) List[U] {
+	return Join(l.Fmap(f))
+}
