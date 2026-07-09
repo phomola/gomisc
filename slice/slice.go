@@ -1,7 +1,7 @@
 package slice
 
 import (
-	"github.com/phomola/gomisc/maybe"
+	"github.com/fealsamh/go-utils/function"
 )
 
 // Fmap is a functorial map.
@@ -42,7 +42,7 @@ func Join[T any](x [][]T) []T {
 	if x == nil {
 		return nil
 	}
-	return Bind(maybe.Identity, x)
+	return Bind(function.Identity, x)
 }
 
 // FallibleFmap is a functorial map for a possibly erring function.
