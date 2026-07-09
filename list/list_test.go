@@ -73,6 +73,17 @@ func TestBind(t *testing.T) {
 	req.Equal([]int{1, 2, 5, 6, 10, 11}, l.Bind(func(x int) List[int] { return FromSlice([]int{x, x + 1}) }).Slice())
 }
 
+func TestJoin(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]List[int]{
+		FromSlice([]int{1, 2, 3}),
+		FromSlice([]int{4, 5, 6}),
+		FromSlice([]int{7, 8, 9}),
+	})
+	req.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, Join(l).Slice())
+}
+
 var gr any
 
 func BenchmarkNativeEnum(b *testing.B) {

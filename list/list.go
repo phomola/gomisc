@@ -2,6 +2,8 @@ package list
 
 import (
 	"unique"
+
+	"github.com/fealsamh/go-utils/function"
 )
 
 // List is a comparable linked list.
@@ -110,17 +112,26 @@ func (l List[T]) Concat(l2 List[T]) List[T] {
 
 // Join ...
 func Join[T comparable](l List[List[T]]) List[T] {
-	switch {
-	case l.IsEmpty():
-		return List[T]{}
-	case l.IsSingleton():
-		return l.Head()
-	default:
-		return l.Head().Concat(Join(l.Tail()))
-	}
+	// switch {
+	// case l.IsEmpty():
+	// 	return List[T]{}
+	// case l.IsSingleton():
+	// 	return l.Head()
+	// default:
+	// 	return l.Head().Concat(Join(l.Tail()))
+	// }
+	return l.Bind(function.Identity)
 }
 
 // Bind ...
 func (l List[T]) Bind[U comparable](f func(T) List[U]) List[U] {
-	return Join(l.Fmap(f))
+	// return Join(l.Fmap(f))
+	switch {
+	case l.IsEmpty():
+		return List[U]{}
+	case l.IsSingleton():
+		return f(l.Head())
+	default:
+		return f(l.Head()).Concat(l.Tail().Bind(f))
+	}
 }
