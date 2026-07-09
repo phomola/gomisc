@@ -1,6 +1,7 @@
 package list
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -43,6 +44,18 @@ func TestEnum(t *testing.T) {
 		s = append(s, x)
 	}
 	req.Equal([]int{1, 2, 3, 4, 5}, s)
+}
+
+func TestFmap(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]int{1, 2, 3})
+	l = l.Fmap(func(x int) int { return x + 1 })
+	req.Equal([]int{2, 3, 4}, l.Slice())
+
+	l = FromSlice([]int{1, 2, 3})
+	l2 := l.Fmap(func(x int) string { return strconv.Itoa(x) })
+	req.Equal([]string{"1", "2", "3"}, l2.Slice())
 }
 
 var gr any

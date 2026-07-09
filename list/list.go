@@ -83,3 +83,15 @@ func FromSlice[T comparable](s []T) List[T] {
 	}
 	return Cons(s[0], FromSlice(s[1:]))
 }
+
+// Fmap ...
+func (l List[T]) Fmap[U comparable](f func(T) U) List[U] {
+	switch {
+	case l.IsEmpty():
+		return List[U]{}
+	case l.IsSingleton():
+		return Unit(f(l.Head()))
+	default:
+		return Cons(f(l.Head()), l.Tail().Fmap(f))
+	}
+}
