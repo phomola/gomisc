@@ -13,8 +13,8 @@ type Map[K any, V any] struct {
 
 // Set ...
 func (m *Map[K, V]) Set(k K, v *V) {
-	m.m.Store(k, weak.Make(v))
 	runtime.AddCleanup(v, func(k K) { m.m.Delete(k) }, k)
+	m.m.Store(k, weak.Make(v))
 }
 
 // Get ...
@@ -24,8 +24,5 @@ func (m *Map[K, V]) Get(k K) (*V, bool) {
 		return nil, false
 	}
 	x := v.(weak.Pointer[V]).Value()
-	if x == nil {
-		return nil, false
-	}
-	return x, true
+	return x, x != nil
 }
