@@ -105,6 +105,18 @@ func getCopier(dst, src reflect.Type) (func(unsafe.Pointer, unsafe.Pointer) erro
 				src = unsafe.Add(src, so)
 				return c(dst, src)
 			})
+		case fs.Type.Kind() == reflect.Slice && fd.Type.Kind() == reflect.Slice:
+			fieldCopiers = append(fieldCopiers, func(dst, src unsafe.Pointer) error {
+				dst = unsafe.Add(dst, do)
+				src = unsafe.Add(src, so)
+				srcSlice := reflect.NewAt(fs.Type, src).Elem()
+				dstSlice := reflect.MakeSlice(fd.Type, srcSlice.Len(), srcSlice.Len())
+				for i := 0; i < srcSlice.Len(); i++ {
+					dstSlice.Index(i).Set(srcSlice.Index(i))
+				}
+				reflect.NewAt(fd.Type, dst).Elem().Set(dstSlice)
+				return nil
+			})
 		default:
 			return nil, fmt.Errorf("can't create copier for %s -> %s", fs.Type, fd.Type)
 		}
