@@ -6,10 +6,17 @@ import (
 	"errors"
 	"log/slog"
 	"testing"
+	"uuid"
 
-	"github.com/google/uuid"
 	"github.com/stretchr/testify/require"
 )
+
+func TestUUIDError(t *testing.T) {
+	req := require.New(t)
+
+	_, err := uuid.Parse("x")
+	req.Equal(invalidUUIDErrMessage, err.Error())
+}
 
 type attributed struct {
 	id uuid.UUID
@@ -109,7 +116,7 @@ func TestLogString(t *testing.T) {
 	logstr, ok = logString(obj2)
 	req.True(ok)
 	req.Equal(logstr, `{
- "Data": "OBJ2"
+	"Data": "OBJ2"
 }`)
 }
 

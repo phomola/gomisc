@@ -2,6 +2,8 @@ package list
 
 import (
 	"unique"
+
+	"github.com/fealsamh/go-utils/function"
 )
 
 // List is a comparable linked list.
@@ -82,4 +84,54 @@ func FromSlice[T comparable](s []T) List[T] {
 		return Unit(s[0])
 	}
 	return Cons(s[0], FromSlice(s[1:]))
+}
+
+// Fmap ...
+func (l List[T]) Fmap[U comparable](f func(T) U) List[U] {
+	switch {
+	case l.IsEmpty():
+		return List[U]{}
+	case l.IsSingleton():
+		return Unit(f(l.Head()))
+	default:
+		return Cons(f(l.Head()), l.Tail().Fmap(f))
+	}
+}
+
+// Concat ...
+func (l List[T]) Concat(l2 List[T]) List[T] {
+	switch {
+	case l.IsEmpty():
+		return l2
+	case l.IsSingleton():
+		return Cons(l.Head(), l2)
+	default:
+		return Cons(l.Head(), l.Tail().Concat(l2))
+	}
+}
+
+// Join ...
+func Join[T comparable](l List[List[T]]) List[T] {
+	// switch {
+	// case l.IsEmpty():
+	// 	return List[T]{}
+	// case l.IsSingleton():
+	// 	return l.Head()
+	// default:
+	// 	return l.Head().Concat(Join(l.Tail()))
+	// }
+	return l.Bind(function.Identity)
+}
+
+// Bind ...
+func (l List[T]) Bind[U comparable](f func(T) List[U]) List[U] {
+	// return Join(l.Fmap(f))
+	switch {
+	case l.IsEmpty():
+		return List[U]{}
+	case l.IsSingleton():
+		return f(l.Head())
+	default:
+		return f(l.Head()).Concat(l.Tail().Bind(f))
+	}
 }
