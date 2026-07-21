@@ -1,6 +1,6 @@
 module github.com/phomola/gomisc
 
-go 1.26.5
+go 1.27
 
 require (
 	github.com/fealsamh/go-utils v0.1.75

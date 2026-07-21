@@ -1,6 +1,7 @@
 package list
 
 import (
+	"strconv"
 	"testing"
 
 	"github.com/stretchr/testify/require"
@@ -43,6 +44,44 @@ func TestEnum(t *testing.T) {
 		s = append(s, x)
 	}
 	req.Equal([]int{1, 2, 3, 4, 5}, s)
+}
+
+func TestFmap(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]int{1, 2, 3})
+	l = l.Fmap(func(x int) int { return x + 1 })
+	req.Equal([]int{2, 3, 4}, l.Slice())
+
+	l = FromSlice([]int{1, 2, 3})
+	l2 := l.Fmap(func(x int) string { return strconv.Itoa(x) })
+	req.Equal([]string{"1", "2", "3"}, l2.Slice())
+}
+
+func TestConcat(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]int{1, 2, 3})
+	l2 := FromSlice([]int{4, 5, 6})
+	req.Equal([]int{1, 2, 3, 4, 5, 6}, l.Concat(l2).Slice())
+}
+
+func TestBind(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]int{1, 5, 10})
+	req.Equal([]int{1, 2, 5, 6, 10, 11}, l.Bind(func(x int) List[int] { return FromSlice([]int{x, x + 1}) }).Slice())
+}
+
+func TestJoin(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]List[int]{
+		FromSlice([]int{1, 2, 3}),
+		FromSlice([]int{4, 5, 6}),
+		FromSlice([]int{7, 8, 9}),
+	})
+	req.Equal([]int{1, 2, 3, 4, 5, 6, 7, 8, 9}, Join(l).Slice())
 }
 
 var gr any
