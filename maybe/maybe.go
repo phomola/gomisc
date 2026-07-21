@@ -7,7 +7,7 @@ package maybe
 import (
 	"database/sql"
 	"database/sql/driver"
-	"encoding/json"
+	"encoding/json/v2"
 	"reflect"
 	"slices"
 	"unsafe"

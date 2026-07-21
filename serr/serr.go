@@ -6,18 +6,23 @@ package serr
 import (
 	"context"
 	"database/sql"
-	"encoding/json"
+	"encoding/json/jsontext"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"log/slog"
 	"strconv"
 	"strings"
 	"time"
+	"uuid"
 
 	"github.com/fealsamh/go-utils/nocopy"
-	"github.com/google/uuid"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
+)
+
+const (
+	invalidUUIDErrMessage = "invalid uuid"
 )
 
 type serror struct {
@@ -250,10 +255,11 @@ func logString(val any) (string, bool) {
 		return logval.LogString(), true
 	}
 
-	b, err := json.MarshalIndent(val, "", " ")
+	b, err := json.Marshal(val)
 	if err != nil {
 		return "", false
 	}
+	(*jsontext.Value)(&b).Indent()
 	return nocopy.String(b), true
 }
 
@@ -279,14 +285,14 @@ func ToGRPC(err error) error {
 	case errors.Is(err, sql.ErrNoRows):
 		return status.Error(codes.NotFound, msg)
 
-	case uuid.IsInvalidLengthError(err):
+	case err.Error() == invalidUUIDErrMessage:
 		return status.Error(codes.InvalidArgument, msg)
 
-	case msg == "invalid UUID format":
-		return status.Error(codes.InvalidArgument, msg)
+		// case msg == "invalid UUID format":
+		// 	return status.Error(codes.InvalidArgument, msg)
 	}
 
-	if _, ok := errors.AsType[*json.SyntaxError](err); ok {
+	if _, ok := errors.AsType[*json.SemanticError](err); ok {
 		return status.Error(codes.InvalidArgument, msg)
 	}
 
