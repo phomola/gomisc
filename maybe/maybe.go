@@ -164,7 +164,7 @@ func (x Maybe[T]) Bind[U any](f func(T) Maybe[U]) Maybe[U] {
 
 // Join is the monadic join operation.
 func Join[T any](x Maybe[Maybe[T]]) Maybe[T] {
-	return Bind(function.Identity, x)
+	return x.Bind(function.Identity)
 }
 
 func (m Maybe[T]) MarshalJSON() ([]byte, error) {
