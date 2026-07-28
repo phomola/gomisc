@@ -135,19 +135,19 @@ func Nothing[T any]() Maybe[T] {
 }
 
 // Fmap is the functorial map for Maybe.
-func (x Maybe[T]) Fmap[U any](f func(T) U) Maybe[U] {
-	if !x.Valid {
+func (m Maybe[T]) Fmap[U any](f func(T) U) Maybe[U] {
+	if !m.Valid {
 		return Maybe[U]{}
 	}
-	return Maybe[U]{Valid: true, Val: f(x.Val)}
+	return Maybe[U]{Valid: true, Val: f(m.Val)}
 }
 
 // FallibleFmap is the functorial map for a possibly erring function.
-func (x Maybe[T]) FallibleFmap[U any](f func(T) (U, error)) (Maybe[U], error) {
-	if !x.Valid {
+func (m Maybe[T]) FallibleFmap[U any](f func(T) (U, error)) (Maybe[U], error) {
+	if !m.Valid {
 		return Maybe[U]{}, nil
 	}
-	y, err := f(x.Val)
+	y, err := f(m.Val)
 	if err != nil {
 		return Maybe[U]{}, err
 	}
@@ -155,11 +155,11 @@ func (x Maybe[T]) FallibleFmap[U any](f func(T) (U, error)) (Maybe[U], error) {
 }
 
 // Bind is the monadic bind operation.
-func (x Maybe[T]) Bind[U any](f func(T) Maybe[U]) Maybe[U] {
-	if !x.Valid {
+func (m Maybe[T]) Bind[U any](f func(T) Maybe[U]) Maybe[U] {
+	if !m.Valid {
 		return Maybe[U]{}
 	}
-	return f(x.Val)
+	return f(m.Val)
 }
 
 // Join is the monadic join operation.
