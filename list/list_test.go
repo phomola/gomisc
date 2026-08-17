@@ -68,6 +68,15 @@ func TestEnumIndexed(t *testing.T) {
 	req.Equal([][]int{{0, 11}, {1, 22}, {2, 33}}, r)
 }
 
+func TestAt(t *testing.T) {
+	req := require.New(t)
+
+	l := FromSlice([]int{1, 2, 3})
+	req.Equal(1, l.At(0))
+	req.Equal(2, l.At(1))
+	req.Equal(3, l.At(2))
+}
+
 var gr any
 
 func BenchmarkNativeEnum(b *testing.B) {
