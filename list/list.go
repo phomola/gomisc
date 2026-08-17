@@ -90,7 +90,7 @@ func FromSlice[T comparable](s []T) List[T] {
 	return Cons(s[0], FromSlice(s[1:]))
 }
 
-// Insert ...
+// Insert returns a new list with the inserted element.
 func (l List[T]) Insert(x T, less func(T, T) bool) List[T] {
 	if l.IsEmpty() {
 		return Unit(x)
@@ -99,4 +99,16 @@ func (l List[T]) Insert(x T, less func(T, T) bool) List[T] {
 		return Cons(x, l)
 	}
 	return Cons(l.Head(), l.Tail().Insert(x, less))
+}
+
+// Sort returns the list sorted.
+func (l List[T]) Sorted(less func(T, T) bool) List[T] {
+	if l.IsEmpty() || l.IsSingleton() {
+		return l
+	}
+	var l2 List[T]
+	for x := range l.Enum() {
+		l2 = l2.Insert(x, less)
+	}
+	return l2
 }

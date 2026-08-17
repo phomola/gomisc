@@ -53,6 +53,12 @@ func TestInsert(t *testing.T) {
 	req.Equal([]int{1, 2}, FromSlice([]int{1}).Insert(2, func(x, y int) bool { return x < y }).Slice())
 }
 
+func TestSorted(t *testing.T) {
+	req := require.New(t)
+
+	req.Equal([]int{1, 2, 3}, FromSlice([]int{3, 2, 1}).Sorted(func(x, y int) bool { return x < y }).Slice())
+}
+
 var gr any
 
 func BenchmarkNativeEnum(b *testing.B) {
