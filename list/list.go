@@ -69,6 +69,27 @@ func (l List[T]) Enum() func(func(T) bool) {
 	}
 }
 
+func (l List[T]) EnumIndexed() func(func(int, T) bool) {
+	return l.enumIndexed(0)
+}
+
+func (l List[T]) enumIndexed(i int) func(func(int, T) bool) {
+	return func(yield func(int, T) bool) {
+		if !l.IsEmpty() {
+			if !yield(i, l.Head()) {
+				return
+			}
+			if !l.IsSingleton() {
+				for i, x := range l.Tail().enumIndexed(i + 1) {
+					if !yield(i, x) {
+						return
+					}
+				}
+			}
+		}
+	}
+}
+
 // Slice returns the list as a slice.
 func (l List[T]) Slice() []T {
 	s := make([]T, 0, l.Len())
