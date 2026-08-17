@@ -23,7 +23,12 @@ func Cons[T comparable](head T, tail List[T]) List[T] {
 
 func (l List[T]) Head() T { return l.head.Value() }
 
-func (l List[T]) Tail() List[T] { return l.tail.Value() }
+func (l List[T]) Tail() List[T] {
+	if l.hasTail {
+		return l.tail.Value()
+	}
+	return List[T]{}
+}
 
 func (l List[T]) IsEmpty() bool { return !l.hasHead }
 
@@ -64,6 +69,7 @@ func (l List[T]) Enum() func(func(T) bool) {
 	}
 }
 
+// Slice returns the list as a slice.
 func (l List[T]) Slice() []T {
 	s := make([]T, 0, l.Len())
 	for x := range l.Enum() {
@@ -82,4 +88,15 @@ func FromSlice[T comparable](s []T) List[T] {
 		return Unit(s[0])
 	}
 	return Cons(s[0], FromSlice(s[1:]))
+}
+
+// Insert ...
+func (l List[T]) Insert(x T, less func(T, T) bool) List[T] {
+	if l.IsEmpty() {
+		return Unit(x)
+	}
+	if less(x, l.Head()) || x == l.Head() {
+		return Cons(x, l)
+	}
+	return Cons(l.Head(), l.Tail().Insert(x, less))
 }

@@ -45,6 +45,14 @@ func TestEnum(t *testing.T) {
 	req.Equal([]int{1, 2, 3, 4, 5}, s)
 }
 
+func TestInsert(t *testing.T) {
+	req := require.New(t)
+
+	req.Equal([]int{1}, FromSlice([]int{}).Insert(1, func(x, y int) bool { return x < y }).Slice())
+	req.Equal([]int{1, 2}, FromSlice([]int{2}).Insert(1, func(x, y int) bool { return x < y }).Slice())
+	req.Equal([]int{1, 2}, FromSlice([]int{1}).Insert(2, func(x, y int) bool { return x < y }).Slice())
+}
+
 var gr any
 
 func BenchmarkNativeEnum(b *testing.B) {
