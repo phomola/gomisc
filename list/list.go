@@ -185,3 +185,11 @@ func (l List[T]) Sorted(less func(T, T) bool) List[T] {
 	}
 	return l2
 }
+
+// At returns the element at the given position.
+func (l List[T]) At(i int) T {
+	if i == 0 {
+		return l.Head()
+	}
+	return l.Tail().At(i - 1)
+}
