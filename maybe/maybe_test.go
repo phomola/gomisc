@@ -1,7 +1,7 @@
 package maybe
 
 import (
-	"encoding/json"
+	"encoding/json/v2"
 	"errors"
 	"fmt"
 	"strconv"
@@ -53,13 +53,13 @@ func TestMarshal(t *testing.T) {
 func TestFmap(t *testing.T) {
 	req := require.New(t)
 
-	req.Equal(Unit("1234"), Fmap(func(x int) string { return strconv.Itoa(x) }, Unit(1234)))
+	req.Equal(Unit("1234"), Unit(1234).Fmap(func(x int) string { return strconv.Itoa(x) }))
 
-	x, err := FallibleFmap(func(x int) (string, error) { return strconv.Itoa(x), nil }, Unit(1234))
+	x, err := Unit(1234).FallibleFmap(func(x int) (string, error) { return strconv.Itoa(x), nil })
 	req.NoError(err)
 	req.Equal(Unit("1234"), x)
 
-	_, err = FallibleFmap(func(x int) (string, error) { return "", errors.ErrUnsupported }, Unit(1234))
+	_, err = Unit(1234).FallibleFmap(func(x int) (string, error) { return "", errors.ErrUnsupported })
 	req.Error(err)
 }
 
