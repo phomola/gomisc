@@ -24,6 +24,8 @@ type (
 		IP2    *d2
 		X      bool
 		S      []string
+		S2     []d2
+		S3     []*d2
 	}
 	s struct {
 		Name   string
@@ -34,6 +36,8 @@ type (
 		I2     s2
 		IP2    *s2
 		S      []string
+		S2     []s2
+		S3     []*s2
 	}
 )
 
@@ -41,7 +45,7 @@ func TestCopy(t *testing.T) {
 	req := require.New(t)
 
 	var r d
-	err := Copy(&r, &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}})
+	err := Copy(&r, &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}})
 	req.Nil(err)
 	req.Equal("name", r.Name)
 	req.Equal(1234, r.Age)
@@ -50,11 +54,13 @@ func TestCopy(t *testing.T) {
 	req.Equal("efgh", r.I.A)
 	req.Equal("mnop", r.IP2.A)
 	req.Equal([]string{"a", "bb", "ccc"}, r.S)
+	req.Equal([]d2{{A: "A"}, {A: "B"}}, r.S2)
+	req.Equal([]*d2{{A: "C"}, {A: "D"}}, r.S3)
 }
 
 func BenchmarkNativeCopy(b *testing.B) {
 	r := make([]*d, 0, 50_000_000)
-	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}}
+	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}}
 	for b.Loop() {
 		d := &d{
 			Name:   src.Name,
@@ -69,7 +75,7 @@ func BenchmarkNativeCopy(b *testing.B) {
 
 func BenchmarkCopierCopy(b *testing.B) {
 	r := make([]*d, 0, 50_000_000)
-	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}}
+	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}}
 	for b.Loop() {
 		d, err := Copied[d](src)
 		if err != nil {
