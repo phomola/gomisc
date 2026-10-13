@@ -259,7 +259,9 @@ func logString(val any) (string, bool) {
 	if err != nil {
 		return "", false
 	}
-	(*jsontext.Value)(&b).Indent()
+	if err := (*jsontext.Value)(&b).Indent(); err != nil {
+		return "", false
+	}
 	return nocopy.String(b), true
 }
 
