@@ -71,6 +71,7 @@ func BenchmarkNativeCopy(b *testing.B) {
 		}
 		r = append(r, d)
 	}
+	b.Log(len(r))
 }
 
 func BenchmarkCopierCopy(b *testing.B) {
@@ -83,4 +84,5 @@ func BenchmarkCopierCopy(b *testing.B) {
 		}
 		r = append(r, d)
 	}
+	b.Log(len(r))
 }
