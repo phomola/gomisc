@@ -1,5 +1,5 @@
-github.com/fealsamh/go-utils v0.2.2 h1:wNOgxH82GpdN2ux8d5Y6mYo3HfAPhCKVEC4dkrpHfj4=
-github.com/fealsamh/go-utils v0.2.2/go.mod h1:WqimPAeDFPtSAP8ONqfCM7xkbraaswFcY8aCNDTLoSM=
+github.com/fealsamh/go-utils v0.2.3 h1:PZ7xyJL/iK6xQEWJ1a0gBC5HB/XWVxk7p9wWDUDaumI=
+github.com/fealsamh/go-utils v0.2.3/go.mod h1:Y4STVksG8soxshTg0e41EOZAEOUgNeLb8rtthleMDfA=
 github.com/golang/protobuf v1.5.4 h1:i7eJL8qZTpSEXOPTxNKhASYpMn+8e5Q6AdndVa1dWek=
 github.com/golang/protobuf v1.5.4/go.mod h1:lnTiLA8Wa4RWRcIUkrtSVa5nRhsEGBg48fD6rSs7xps=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
