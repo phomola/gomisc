@@ -5,7 +5,7 @@ go 1.27
 require (
 	github.com/fealsamh/go-utils v0.2.3
 	github.com/stretchr/testify v1.12.1
-	google.golang.org/grpc v1.84.0
+	google.golang.org/grpc v1.85.0
 )
 
 require (
