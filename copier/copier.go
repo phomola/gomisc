@@ -67,7 +67,6 @@ func getCopier(dst, src reflect.Type) (func(unsafe.Pointer, unsafe.Pointer) erro
 				return nil
 			})
 		case fs.Type == decimalType && fd.Type == decimalType:
-			fmt.Println("===== copy decimal")
 			fieldCopiers = append(fieldCopiers, func(dst, src unsafe.Pointer) error {
 				dst = unsafe.Add(dst, do)
 				src = unsafe.Add(src, so)
