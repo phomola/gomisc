@@ -6,6 +6,8 @@ import (
 	"reflect"
 	"sync"
 	"unsafe"
+
+	decimal "github.com/quagmt/udecimal"
 )
 
 var (
@@ -14,6 +16,8 @@ var (
 	ErrInvalidType = errors.New("invalid type")
 	// ErrFieldMissing ...
 	ErrFieldMissing = errors.New("field missing")
+
+	decimalType = reflect.TypeFor[decimal.Decimal]()
 )
 
 type typePair struct {
@@ -60,6 +64,14 @@ func getCopier(dst, src reflect.Type) (func(unsafe.Pointer, unsafe.Pointer) erro
 				dst = unsafe.Add(dst, do)
 				src = unsafe.Add(src, so)
 				*(*string)(dst) = *(*string)(src)
+				return nil
+			})
+		case fs.Type == decimalType && fd.Type == decimalType:
+			fmt.Println("===== copy decimal")
+			fieldCopiers = append(fieldCopiers, func(dst, src unsafe.Pointer) error {
+				dst = unsafe.Add(dst, do)
+				src = unsafe.Add(src, so)
+				*(*decimal.Decimal)(dst) = *(*decimal.Decimal)(src)
 				return nil
 			})
 		case fs.Type.Kind() == reflect.Pointer && fd.Type.Kind() == reflect.Pointer:
