@@ -124,9 +124,7 @@ func BenchmarkNativeEnum(b *testing.B) {
 	var lr any
 	for i := 0; i < b.N; i++ {
 		r := make([]int, 0, 5)
-		for _, x := range s {
-			r = append(r, x)
-		}
+		r = append(r, s...)
 		lr = r
 	}
 	gr = lr

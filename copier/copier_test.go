@@ -3,6 +3,7 @@ package copier
 import (
 	"testing"
 
+	decimal "github.com/quagmt/udecimal"
 	"github.com/stretchr/testify/require"
 )
 
@@ -26,6 +27,7 @@ type (
 		S      []string
 		S2     []d2
 		S3     []*d2
+		D      decimal.Decimal
 	}
 	s struct {
 		Name   string
@@ -38,6 +40,7 @@ type (
 		S      []string
 		S2     []s2
 		S3     []*s2
+		D      decimal.Decimal
 	}
 )
 
@@ -45,7 +48,8 @@ func TestCopy(t *testing.T) {
 	req := require.New(t)
 
 	var r d
-	err := Copy(&r, &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}})
+	err := Copy(&r, &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"},
+		[]string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}, decimal.MustParse("12.34")})
 	req.Nil(err)
 	req.Equal("name", r.Name)
 	req.Equal(1234, r.Age)
@@ -56,11 +60,13 @@ func TestCopy(t *testing.T) {
 	req.Equal([]string{"a", "bb", "ccc"}, r.S)
 	req.Equal([]d2{{A: "A"}, {A: "B"}}, r.S2)
 	req.Equal([]*d2{{A: "C"}, {A: "D"}}, r.S3)
+	req.True(decimal.MustParse("12.34").Equal(r.D))
 }
 
 func BenchmarkNativeCopy(b *testing.B) {
 	r := make([]*d, 0, 50_000_000)
-	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}}
+	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"},
+		[]string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}, decimal.MustParse("12.34")}
 	for b.Loop() {
 		d := &d{
 			Name:   src.Name,
@@ -71,11 +77,13 @@ func BenchmarkNativeCopy(b *testing.B) {
 		}
 		r = append(r, d)
 	}
+	b.Log(len(r))
 }
 
 func BenchmarkCopierCopy(b *testing.B) {
 	r := make([]*d, 0, 50_000_000)
-	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"}, []string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}}
+	src := &s{"name", 1234, 1.85, &s2{"abcd"}, s2{"efgh"}, s2{"ijkl"}, &s2{"mnop"},
+		[]string{"a", "bb", "ccc"}, []s2{{"A"}, {"B"}}, []*s2{{"C"}, {"D"}}, decimal.MustParse("12.34")}
 	for b.Loop() {
 		d, err := Copied[d](src)
 		if err != nil {
@@ -83,4 +91,5 @@ func BenchmarkCopierCopy(b *testing.B) {
 		}
 		r = append(r, d)
 	}
+	b.Log(len(r))
 }
