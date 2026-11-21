@@ -4,7 +4,7 @@ go 1.27
 
 require (
 	github.com/fealsamh/go-utils v0.2.5
-	github.com/quagmt/udecimal v1.11.1
+	github.com/quagmt/udecimal v1.12.0
 	github.com/sony/gobreaker/v2 v2.4.0
 	github.com/stretchr/testify v1.12.1
 	google.golang.org/grpc v1.85.0
